@@ -17,6 +17,9 @@ def test_vyhodnot_vyhra_x():
     assert vyhodnot("oxoxoxoxo-oxoxoxoxxx") == "x"
     assert vyhodnot("xxooxxoox-ooxxooxxxo") == "x"
 
+    assert vyhodnot("---xxx--------------") == "x"      #dopsaný test
+    assert vyhodnot("------------xxx-----") == "x"      #dopsaný test
+
 
 def test_vyhodnot_vyhra_o():
     """
@@ -32,6 +35,9 @@ def test_vyhodnot_vyhra_o():
     assert vyhodnot("oxoxoxoxo-oxoxoxooox") == "o"
     assert vyhodnot("xxooxxoox-ooxxooxooo") == "o"
 
+    assert vyhodnot("---ooo--------------") == "o"      #dopsaný test
+    assert vyhodnot("------------ooo-----") == "o"      #dopsaný test
+
 
 def test_vyhodnot_remiza():
     """
@@ -39,6 +45,9 @@ def test_vyhodnot_remiza():
     """
     assert vyhodnot("oxoxoxoxoxoxoxoxoxox") == "!"
     assert vyhodnot("xxooxxooxxooxxooxxoo") == "!"
+
+    assert vyhodnot("ooxxooxxooxxooxxooxx") == "!"      #dopsaný test
+    assert vyhodnot("xoxoxoxoxoxoxoxoxoxo") == "!"      #dopsaný test
 
 
 def test_vyhodnot_hra():
@@ -54,6 +63,9 @@ def test_vyhodnot_hra():
     assert vyhodnot("oxoxoxoxo-oxoxoxoxox") == "-"
     assert vyhodnot("xxooxxoox-ooxxooxxoo") == "-"
 
+    assert vyhodnot("----xxoox-ooxxooxxoo") == "-"      #dopsaný test
+    assert vyhodnot("xxooxxoox-ooxx------") == "-"      #dopsaný test
+
 
 def test_tah_x():
     """
@@ -62,6 +74,9 @@ def test_tah_x():
     assert tah("--------------------", 0, "x") == "x-------------------"
     assert tah("--------------------", 10, "x") == "----------x---------"
     assert tah("--------------------", 19, "x") == "-------------------x"
+
+    assert tah("--------------------", 5, "x") == "-----x--------------"        #dopsaný test
+    assert tah("--------------------", 18, "x") == "------------------x-"       #dopsaný test
 
 
 def test_tah_o():
@@ -72,15 +87,33 @@ def test_tah_o():
     assert tah("--------------------", 10, "o") == "----------o---------"
     assert tah("--------------------", 19, "o") == "-------------------o"
 
+    assert tah("--------------------", 5, "o") == "-----o--------------"        #dopsaný test
+    assert tah("--------------------", 18, "o") == "------------------o-"       #dopsaný test
+
 
 def test_tah_pocitace_prazdne():
     """
     Hra na prázdné pole.
     """
     pole = "--------------------"
-    result = tah_pocitace(pole)
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
     assert len(result) == 20
     assert result.count("-") == 19
+    assert result.count("o") == 1
+
+    pole = "x-------------------"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("-") == 18
+    assert result.count("o") == 1
+
+    pole = "-------------------x"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("-") == 18
     assert result.count("o") == 1
 
 
@@ -89,7 +122,22 @@ def test_tah_pocitace_skoro_plne():
     Hra na skoro plné pole (volno uprostřed).
     """
     pole = "xoxoxoxoxo-xoxoxoxox"
-    result = tah_pocitace(pole)
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+    pole = "xoxoxoxox-oxoxoxoxox"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+    pole = "xoxoxoxoxox-oxoxoxox"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
     assert len(result) == 20
     assert result.count("x") == 10
     assert result.count("o") == 10
@@ -100,10 +148,27 @@ def test_tah_pocitace_skoro_plne_zacatek():
     Hra na skoro plné pole (volno na začátku).
     """
     pole = "-xoxoxoxoxoxoxoxoxox"
-    result = tah_pocitace(pole)
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
     assert len(result) == 20
     assert result.count("x") == 10
     assert result.count("o") == 10
+
+    pole = "-oxxoxoxoxoxoxoxoxox"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+    pole = "-xoxoxoxoxoxoxoxoxxo"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+
 
 
 def test_tah_pocitace_skoro_plne_konec():
@@ -111,10 +176,28 @@ def test_tah_pocitace_skoro_plne_konec():
     Hra na skoro plné pole (volno na konci).
     """
     pole = "xoxoxoxoxoxoxoxoxox-"
-    result = tah_pocitace(pole)
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
     assert len(result) == 20
     assert result.count("x") == 10
     assert result.count("o") == 10
+
+    pole = "xxooxoxoxoxoxoxoxox-"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+    pole = "xxooxoxoxoxoxoxooxx-"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 10
+    assert result.count("o") == 10
+
+
+
 
 
 def test_tah_pocitace_skoro_plne_konec_2():
@@ -122,7 +205,24 @@ def test_tah_pocitace_skoro_plne_konec_2():
     Hra na skoro plné pole (2× volno na konci).
     """
     pole = "xooxxooxoxoxoxooxx--"
-    result = tah_pocitace(pole)
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 9
+    assert result.count("o") == 10
+    assert result.count("-") == 1
+
+    pole = "oxoxxooxoxoxoxooxx--"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == 20
+    assert result.count("x") == 9
+    assert result.count("o") == 10
+    assert result.count("-") == 1
+
+    pole = "xooxxooxoxoxoxoxox--"       #dopsaný test
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
     assert len(result) == 20
     assert result.count("x") == 9
     assert result.count("o") == 10
