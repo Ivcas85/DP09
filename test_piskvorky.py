@@ -49,6 +49,10 @@ def test_vyhodnot_remiza():
     assert vyhodnot("ooxxooxxooxxooxxooxx") == "!"      #dopsaný test
     assert vyhodnot("xoxoxoxoxoxoxoxoxoxo") == "!"      #dopsaný test
 
+    assert vyhodnot("abcd") == "!"                      #dopsaný test
+
+
+
 
 def test_vyhodnot_hra():
     """
@@ -115,6 +119,9 @@ def test_tah_pocitace_prazdne():
     assert len(result) == 20
     assert result.count("-") == 18
     assert result.count("o") == 1
+
+
+
 
 
 def test_tah_pocitace_skoro_plne():
@@ -197,9 +204,6 @@ def test_tah_pocitace_skoro_plne_konec():
     assert result.count("o") == 10
 
 
-
-
-
 def test_tah_pocitace_skoro_plne_konec_2():
     """
     Hra na skoro plné pole (2× volno na konci).
@@ -227,6 +231,30 @@ def test_tah_pocitace_skoro_plne_konec_2():
     assert result.count("x") == 9
     assert result.count("o") == 10
     assert result.count("-") == 1
+
+def test_jina_delka_pole_tah_pocitac():     #test na jinou délku pole
+    delkapole=2
+    pole=delkapole*"-"
+    symbol_pocitace = "o"
+    result = tah_pocitace(pole,symbol_pocitace)
+    assert len(result) == delkapole
+    assert result.count("-") == delkapole-1
+    assert result.count("o") == 1
+
+def test_plne_hraci_pole_tah_pocitac():     #test na plné pole
+    with pytest.raises(ValueError):
+        pole = "xoxoxoxxoxoxx"
+        symbol_pocitace = "o"
+        result = tah_pocitace(pole,symbol_pocitace)
+
+def test_nulove_hraci_pole():       #test na prázné pole
+    with pytest.raises(ValueError):
+        pole = ""
+        symbol_pocitace = "o"
+        result = tah_pocitace(pole,symbol_pocitace)
+
+
+
 
 
 if __name__ == "__main__":

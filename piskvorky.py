@@ -16,26 +16,29 @@ def vyhodnot(pole):
 
 
 
-def tah_hrace(herni_pole):
+def tah_hrace(herni_pole,symbol_hrace):
     "Ptá se hráče na kterou pozici chce hrát a vrací herní pole se zaznamenaným tahem"
 
     while True:
         cislo_pozice = int(input("Na kterou pozici chceš hrát? "))
         if cislo_pozice >= 0 and cislo_pozice < len(herni_pole) and herni_pole[cislo_pozice] == "-":
-            return tah(herni_pole, cislo_pozice, "x")
+            return tah(herni_pole, cislo_pozice, symbol_hrace)
         else:
             print("Špatná pozice, zkus to znovu. ")
 
 
-def piskvorky(delkapole,symbol_pocitace):
+def piskvorky():
     "Vygeneruje prázdné pole a střídá tah hráče a počítače. "
+    delkapole=25
+    symbol_pocitace="o"
+    symbol_hrace="x"
     pole = "-"*delkapole
     while True:
         print(pole)
-        pole = tah_hrace(pole)
+        pole = tah_hrace(pole,symbol_hrace)
         print(pole)
-        if "-" not in pole:
-            raise ValueError('Máš plné hrací pole')
+        if vyhodnot(pole) != '-':
+            break
         pole = tah_pocitace(pole,symbol_pocitace)
         if vyhodnot(pole) != '-':
             break
